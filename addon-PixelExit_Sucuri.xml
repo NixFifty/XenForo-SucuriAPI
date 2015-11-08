@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon addon_id="PixelExit_Sucuri" title="[PE] Sucuri" version_string="1.0.0" version_id="1000051" url="https://pixelexit.com/" install_callback_class="" install_callback_method="" uninstall_callback_class="" uninstall_callback_method="">
+  <admin_navigation>
+    <navigation navigation_id="peSucuri" parent_navigation_id="options" display_order="1000" link="sucuri" admin_permission_id="" debug_only="0" hide_no_children="0"/>
+  </admin_navigation>
+  <admin_permissions>
+    <admin_permission admin_permission_id="peManageSucuri" display_order="1300"/>
+  </admin_permissions>
+  <admin_style_properties/>
+  <admin_templates>
+    <template title="pe_sucuri_index"><![CDATA[<xen:title>{xen:phrase pe_sucuri_firewall_details}</xen:title>
+
+<xen:container var="$head.pesCss"><style>
+.sucuriInfo dt { width: 30% ;}
+.sucuriInfo dd { width: 66% ;}
+</style></xen:container>
+
+<xen:require css="filter_list.css" />
+<xen:require js="js/xenforo/filter_list.js" />
+
+<xen:if is="{$success}"><p class="importantMessage">{xen:phrase pe_sucuri_cache_cleared}</p></xen:if>
+
+<xen:form action="{xen:adminlink sucuri/clear-cache}">
+	<xen:controlunit label="{xen:phrase pe_sucuri}:">
+		{$sucuri.output.domain} ({$sucuri.output.internal_ip_main})
+		<dl class="pairsColumns sucuriInfo">
+			<dt>{xen:phrase pe_sucuri_status}:</dt> 
+				<dd>
+					<xen:if is="{$sucuri.output.proxy_active}">
+						<strong style="color:green">{xen:phrase pe_sucuri_proxy_active}</strong>
+					<xen:else/>
+						<strong style="color:red">{xen:phrase pe_sucuri_proxy_not_active}</strong>
+					</xen:if>
+			</dd>
+			<dt>{xen:phrase pe_sucuri_security_level}:</dt> <dd>{$sucuri.securityPhrase}</dd>
+			<dt>{xen:phrase pe_sucuri_cache_mode}:</dt> <dd>{$sucuri.cachePhrase}</dd>
+		</dl>
+	</xen:controlunit>
+
+	<h2 class="subHeading">{xen:phrase pe_sucuri_clear_cache}</h2>
+	<xen:checkboxunit label="">
+		<xen:option name="confirm" value="1" label="{xen:phrase pe_sucuri_clear_cache}" hint="{xen:phrase pe_sucuri_clear_cache_description}" />
+	</xen:checkboxunit>
+	
+	<xen:submitunit save="{xen:phrase pe_sucuri_clear_cache}" />	
+</xen:form>
+
+<h2 class="subHeading">
+	{xen:phrase pe_sucuri_whitelisted_ip_addresses}
+</h2>
+
+<xen:if is="{$sucuri.output.whitelist_list}">
+	<ol class="FilterList Scrollable">
+		<xen:foreach loop="$sucuri.output.whitelist_list" key="$k" value="$ip">
+			<xen:listitem id="{$k}" label="{$ip}" />
+		</xen:foreach>
+	</ol>
+</xen:if>]]></template>
+  </admin_templates>
+  <admin_template_modifications/>
+  <code_events/>
+  <code_event_listeners/>
+  <cron/>
+  <email_templates/>
+  <email_template_modifications/>
+  <optiongroups>
+    <group group_id="peSucuri" display_order="10500" debug_only="0"/>
+    <option option_id="peSucuriApiKey" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="peSucuri" display_order="10"/>
+    </option>
+    <option option_id="peSucuriApiSecret" edit_format="textbox" data_type="string" can_backup="1">
+      <default_value></default_value>
+      <edit_format_params></edit_format_params>
+      <sub_options></sub_options>
+      <relation group_id="peSucuri" display_order="20"/>
+    </option>
+  </optiongroups>
+  <permissions>
+    <permission_groups/>
+    <permissions/>
+    <interface_groups/>
+  </permissions>
+  <phrases>
+    <phrase title="admin_navigation_peSucuri" version_id="1000030" version_string="1.0.0"><![CDATA[Sucuri]]></phrase>
+    <phrase title="admin_permission_peManageSucuri" version_id="1000030" version_string="1.0.0"><![CDATA[Manage Sucuri Website Firewall]]></phrase>
+    <phrase title="option_group_peSucuri" version_id="1000030" version_string="1.0.0"><![CDATA[[PE] Sucuri Options]]></phrase>
+    <phrase title="option_group_peSucuri_description" version_id="1000030" version_string="1.0.0"><![CDATA[Controls to manage integration of XenForo with Sucuri.]]></phrase>
+    <phrase title="option_peSucuriApiKey" version_id="1000030" version_string="1.0.0"><![CDATA[Sucuri API Key]]></phrase>
+    <phrase title="option_peSucuriApiKey_explain" version_id="1000030" version_string="1.0.0"><![CDATA[The API key that is associated with this domain. This information can be obtained from your <a href="https://waf.sucuri.net/" target="_blank">CloudProxy dashboard</a> under the domain you'd like to use.]]></phrase>
+    <phrase title="option_peSucuriApiSecret" version_id="1000030" version_string="1.0.0"><![CDATA[Sucuri API Secret]]></phrase>
+    <phrase title="option_peSucuriApiSecret_explain" version_id="1000030" version_string="1.0.0"><![CDATA[The corresponding secret for this domain.]]></phrase>
+    <phrase title="pe_sucuri" version_id="1000030" version_string="1.0.0"><![CDATA[Sucuri]]></phrase>
+    <phrase title="pe_sucuri_cache_cleared" version_id="1000030" version_string="1.0.0"><![CDATA[The cache for this domain is being cleared. Note that it may take up to two minutes for it to be fully flushed.]]></phrase>
+    <phrase title="pe_sucuri_cache_mode" version_id="1000030" version_string="1.0.0"><![CDATA[Cache Mode]]></phrase>
+    <phrase title="pe_sucuri_clear_cache" version_id="1000030" version_string="1.0.0"><![CDATA[Clear Cache]]></phrase>
+    <phrase title="pe_sucuri_clear_cache_description" version_id="1000030" version_string="1.0.0"><![CDATA[This option can be used to clear Sucuri CloudProxy cache after any website changes have been made. This will reflect live as soon as you click the clear cache button.]]></phrase>
+    <phrase title="pe_sucuri_docache" version_id="1000030" version_string="1.0.0"><![CDATA[Enabled]]></phrase>
+    <phrase title="pe_sucuri_firewall_details" version_id="1000030" version_string="1.0.0"><![CDATA[Sucuri Firewall Details]]></phrase>
+    <phrase title="pe_sucuri_high" version_id="1000030" version_string="1.0.0"><![CDATA[High]]></phrase>
+    <phrase title="pe_sucuri_nocache" version_id="1000030" version_string="1.0.0"><![CDATA[Minimal Caching]]></phrase>
+    <phrase title="pe_sucuri_nocacheatall" version_id="1000030" version_string="1.0.0"><![CDATA[Cache Disabled]]></phrase>
+    <phrase title="pe_sucuri_paranoid" version_id="1000030" version_string="1.0.0"><![CDATA[Paranoid]]></phrase>
+    <phrase title="pe_sucuri_proxy_active" version_id="1000030" version_string="1.0.0"><![CDATA[Proxy Active]]></phrase>
+    <phrase title="pe_sucuri_proxy_not_active" version_id="1000030" version_string="1.0.0"><![CDATA[Proxy Not Active]]></phrase>
+    <phrase title="pe_sucuri_security_level" version_id="1000030" version_string="1.0.0"><![CDATA[Security Level]]></phrase>
+    <phrase title="pe_sucuri_sitecache" version_id="1000030" version_string="1.0.0"><![CDATA[Site Caching]]></phrase>
+    <phrase title="pe_sucuri_status" version_id="1000030" version_string="1.0.0"><![CDATA[Status]]></phrase>
+    <phrase title="pe_sucuri_unknown" version_id="1000030" version_string="1.0.0"><![CDATA[Unknown]]></phrase>
+    <phrase title="pe_sucuri_whitelisted_ip_addresses" version_id="1000030" version_string="1.0.0"><![CDATA[Whitelisted IP Addresses]]></phrase>
+    <phrase title="to_use_sucuri_integration_must_enter_application_info" version_id="1000030" version_string="1.0.0"><![CDATA[To use Sucuri integration, you must first enter your <a href="{url}">Sucuri API information</a>.]]></phrase>
+  </phrases>
+  <route_prefixes>
+    <route_type type="admin">
+      <prefix original_prefix="sucuri" class="PixelExit_Sucuri_Route_PrefixAdmin_Sucuri" build_link="none"/>
+    </route_type>
+  </route_prefixes>
+  <style_properties/>
+  <templates/>
+  <public_template_modifications/>
+  <bb_code_media_sites/>
+  <bb_codes/>
+</addon>
